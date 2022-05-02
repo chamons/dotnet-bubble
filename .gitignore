@@ -1,3 +1,5 @@
 dotnet-install.sh
 downloads/
 donut.sh
+package/
+.DS_Store
