@@ -13,6 +13,11 @@ donut.sh::
 
 install:: workloads
 
+clean::
+	-$(Q) rm -r ./downloads
+	-$(Q) rm ./donut.sh
+	-$(Q) rm ./dotnet-install.sh
+
 workloads:: downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))
 	$(Q) downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet workload install ios
 
