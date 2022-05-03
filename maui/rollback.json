@@ -1,0 +1,5 @@
+{
+    "microsoft.net.sdk.maui": "6.0.300-rc.3.5667",
+    "microsoft.net.workload.mono.toolchain": "6.0.5",
+    "microsoft.net.workload.emscripten": "6.0.4"
+}

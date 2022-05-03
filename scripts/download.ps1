@@ -31,5 +31,16 @@ foreach($a in $artifacts){
     }
 }
 
-Expand-Archive $downloads"/package.zip" $root
-Expand-Archive $downloads"/package-internal.zip" $root
+#Expand-Archive $downloads"/package.zip" $root
+#Expand-Archive $downloads"/package-internal.zip" $root
+
+$mauibuildId = "6104157"
+$artifacts = $vsts.Artifacts.GetArtifacts($mauibuildId)
+foreach($a in $artifacts){
+    if ($a.GetName() -eq "nuget-macos" -and !(Test-Path $downloads/"nuget-macos.zip")) {
+        Write-Host "Downloading:" $a.GetName()
+        $vsts.Artifacts.DownloadArtifact($a, $downloads)
+    }
+}
+
+Expand-Archive $downloads"/nuget-macos.zip" $root

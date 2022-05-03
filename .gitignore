@@ -7,3 +7,4 @@ downloads/
 package/
 package-internal/
 dotnet/
+nuget-macos/
