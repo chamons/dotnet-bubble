@@ -1,6 +1,9 @@
-dotnet-install.sh
-downloads/
-donut.sh
-package/
 .DS_Store
-WorkloadRollback.json
+
+dotnet-install.sh
+donut.sh
+
+downloads/
+package/
+package-internal/
+dotnet/

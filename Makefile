@@ -4,13 +4,14 @@ DOTNET_VERSION=6.0.300-rtm.22220.25
 CUSTOM_DOTNET_VERSION=6.0.0-dev
 DOTNET_TARBALL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$(DOTNET_VERSION)/dotnet-sdk-$(DOTNET_VERSION)-osx-x64.tar.gz
 DOTNET_TARBALL_NAME=$(notdir $(DOTNET_TARBALL))
-DOTNET_INVOCATION=/downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet
+DOTNET_INVOCATION=/dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet
 
-install:: downloads/$(basename $(basename $(DOTNET_TARBALL_NAME))) workloads donut.sh
+install:: dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME))) workloads donut.sh
 
 clean::
 	-$(Q) rm -r ./downloads
 	-$(Q) rm -r ./package
+	-$(Q) rm -r ./dotnet
 	-$(Q) rm ./donut.sh
 	-$(Q) rm ./dotnet-install.sh
 
@@ -19,10 +20,10 @@ donut.sh::
 	$(Q) chmod +x $@.tmp
 	$(Q) mv $@.tmp $@
 
-workloads:: downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))
+workloads:: dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME)))
 	echo workloads
 
-downloads/$(basename $(basename $(DOTNET_TARBALL_NAME))): dotnet-install.sh
+dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME))): dotnet-install.sh
 	$(Q) echo "Downloading and installing .NET $(DOTNET_VERSION) into $@..."
 	$(Q) ./dotnet-install.sh --install-dir "$@.tmp" --version "$(DOTNET_VERSION)" --architecture x64 --no-path $$DOTNET_INSTALL_EXTRA_ARGS
 	$(Q) rm -Rf "$@"
