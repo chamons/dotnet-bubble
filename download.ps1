@@ -3,7 +3,7 @@ $root="/Users/donblas/Programming/dotnet-bubble"
 $package=$root + "/package"
 Import-Module $macios"/tools/devops/automation/scripts/VSTS.psm1"
 
-$buildID="6095618"
+$buildID="6072553"
 
 $org="devdiv"
 $project="DevDiv"

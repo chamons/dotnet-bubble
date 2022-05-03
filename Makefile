@@ -6,20 +6,21 @@ DOTNET_TARBALL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$(DOTNET_VERSI
 DOTNET_TARBALL_NAME=$(notdir $(DOTNET_TARBALL))
 DOTNET_INVOCATION=/downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet
 
+install:: downloads/$(basename $(basename $(DOTNET_TARBALL_NAME))) workloads donut.sh
+
+clean::
+	-$(Q) rm -r ./downloads
+	-$(Q) rm -r ./package
+	-$(Q) rm ./donut.sh
+	-$(Q) rm ./dotnet-install.sh
+
 donut.sh::
 	$(Q) sed 's#PATH_TO_REPLACE#$(DOTNET_INVOCATION)#' template > $@.tmp
 	$(Q) chmod +x $@.tmp
 	$(Q) mv $@.tmp $@
 
-install:: workloads
-
-clean::
-	-$(Q) rm -r ./downloads
-	-$(Q) rm ./donut.sh
-	-$(Q) rm ./dotnet-install.sh
-
 workloads:: downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))
-	$(Q) downloads/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet workload install ios
+	echo workloads
 
 downloads/$(basename $(basename $(DOTNET_TARBALL_NAME))): dotnet-install.sh
 	$(Q) echo "Downloading and installing .NET $(DOTNET_VERSION) into $@..."
