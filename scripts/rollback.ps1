@@ -1,5 +1,6 @@
 $rollback = "./package-internal/WorkloadRollback.json"
 
+$config = Get-Content variables.json | ConvertFrom-Json
 $versionData = Get-Content $rollback | ConvertFrom-Json
 
 $env:IOS_WORKLOAD_VERSION = Select-Object -ExpandProperty "microsoft.net.sdk.ios"
@@ -7,4 +8,8 @@ $env:TVOS_WORKLOAD_VERSION = Select-Object -ExpandProperty "microsoft.net.sdk.tv
 $env:MACOS_WORKLOAD_VERSION = Select-Object -ExpandProperty "microsoft.net.sdk.macos"
 $env:MACCATALYST_WORKLOAD_VERSION = Select-Object -ExpandProperty "microsoft.net.sdk.maccatalyst"
 
-bash ./donut.sh workload install --from-rollback-file $rollback --source ./package --source ./nuget-macos/ --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/darc-pub-dotnet-runtime-a21b9a2d/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/xamarin/public/_packaging/macios-dependencies/nuget/v3/index.json" --source "https://pkgs.dev.azure.com/azure-public/vside/_packaging/xamarin-impl/nuget/v3/index.json" --verbosity diag ios tvos macos maccatalyst maui
+
+$rawsources = Select-Xml -Path ($config.macios +"/NuGet.config") -Xpath '//add' | ForEach-Object { $_.Node.Value } | Where-Object  { $_ -match "https" }
+$sources = "--source :" + [system.String]::Join(" --source ", $rawsources)
+
+bash ./donut.sh workload install --from-rollback-file $rollback --source ./package $sources --verbosity diag ios tvos macos maccatalyst maui
