@@ -7,13 +7,14 @@ DOTNET_TARBALL=https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$(DOTNET_VERSI
 DOTNET_TARBALL_NAME=$(notdir $(DOTNET_TARBALL))
 DOTNET_INVOCATION=/dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME)))/dotnet
 
-install:: dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME))) workloads donut.sh
+install:: dotnet/$(basename $(basename $(DOTNET_TARBALL_NAME))) donut.sh workloads
 
 clean::
 	-$(Q) rm -r ./downloads
 	-$(Q) rm -r ./package
 	-$(Q) rm -r ./package-internal
-	-$(Q) rm -r ./dotnet	
+	-$(Q) rm -r ./dotnet
+	-$(Q) rm -r ./nuget-macos	
 	-$(Q) rm ./donut.sh
 	-$(Q) rm ./dotnet-install.sh
 

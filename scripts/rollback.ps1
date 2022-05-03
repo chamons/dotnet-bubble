@@ -12,4 +12,4 @@ $env:MACCATALYST_WORKLOAD_VERSION = Select-Object -ExpandProperty "microsoft.net
 $rawsources = Select-Xml -Path ($config.macios +"/NuGet.config") -Xpath '//add' | ForEach-Object { $_.Node.Value } | Where-Object  { $_ -match "https" }
 $sources = "--source :" + [system.String]::Join(" --source ", $rawsources)
 
-bash ./donut.sh workload install --from-rollback-file $rollback --source ./package $sources --verbosity diag ios tvos macos maccatalyst maui
+bash ($config.root + "/donut.sh") workload install --from-rollback-file $rollback --source ./package $sources --verbosity diag ios tvos macos maccatalyst maui

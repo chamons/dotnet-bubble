@@ -1,16 +1,15 @@
-$macios="/Users/donblas/Programming/xamarin-macios"
-$root="/Users/donblas/Programming/dotnet-bubble"
-$downloads=$root + "/downloads"
-$package=$root + "/package"
-Import-Module $macios"/tools/devops/automation/scripts/VSTS.psm1"
+$config = Get-Content variables.json | ConvertFrom-Json
 
-$buildID="6089737"
+$downloads=$config.root + "/downloads"
+$package=$config.root + "/package"
+$module=$config.macios + "/tools/devops/automation/scripts/VSTS.psm1"
+Import-Module $module
 
 $org="devdiv"
 $project="DevDiv"
-$token=Get-Content /Users/donblas/.vsts_pat
+$token=Get-Content $config.vsts_pat_location
 $vsts = New-VSTS -Org $org -Project $project -Token $token
-$artifacts = $vsts.Artifacts.GetArtifacts($buildID)
+$artifacts = $vsts.Artifacts.GetArtifacts($config.macios_build_id)
 
 if (!(Test-Path $package)) {
     $null = New-Item $package -ItemType "directory"
@@ -31,11 +30,10 @@ foreach($a in $artifacts){
     }
 }
 
-#Expand-Archive $downloads"/package.zip" $root
-#Expand-Archive $downloads"/package-internal.zip" $root
+Expand-Archive $downloads"/package.zip" $config.root
+Expand-Archive $downloads"/package-internal.zip" $config.root
 
-$mauibuildId = "6104157"
-$artifacts = $vsts.Artifacts.GetArtifacts($mauibuildId)
+$artifacts = $vsts.Artifacts.GetArtifacts($config.maui_build_id)
 foreach($a in $artifacts){
     if ($a.GetName() -eq "nuget-macos" -and !(Test-Path $downloads/"nuget-macos.zip")) {
         Write-Host "Downloading:" $a.GetName()
@@ -43,4 +41,4 @@ foreach($a in $artifacts){
     }
 }
 
-Expand-Archive $downloads"/nuget-macos.zip" $root
+Expand-Archive $downloads"/nuget-macos.zip" $config.root

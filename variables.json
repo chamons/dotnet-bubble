@@ -1,4 +1,7 @@
 {
     "macios": "/Users/donblas/Programming/xamarin-macios",
-    "root": "/Users/donblas/Programming/dotnet-bubble"
+    "root": "/Users/donblas/Programming/dotnet-bubble",
+    "vsts_pat_location": "/Users/donblas/.vsts_pat",
+    "macios_build_id": "6089737",
+    "maui_build_id": "6104157"
 }
